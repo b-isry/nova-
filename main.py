@@ -44,8 +44,10 @@ if __name__ == '__main__':
         # Check if an event loop is already running
         loop = asyncio.get_running_loop()
     except RuntimeError:
-        # No event loop is running, so create a new one
-        asyncio.run(main())
+        # No event loop is running, so create a new one and set it
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(main())
     else:
         # If an event loop is running, use it to run the main coroutine
         loop.create_task(main())
