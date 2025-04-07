@@ -30,13 +30,14 @@ async def main():
     webhook_url = os.getenv('WEBHOOK_URL')
     await application.bot.set_webhook(webhook_url)
     
-    # Start the webhook
-    await application.run_webhook(
+    # Run the webhook without closing the event loop
+    await application.start()
+    await application.updater.start_webhook(
         listen="0.0.0.0",
         port=PORT,
         webhook_url=webhook_url,
-        secret_token=os.getenv('SECRET_TOKEN')  # Optional but recommended
     )
+    await application.updater.idle()
 
 if __name__ == '__main__':
     import asyncio
